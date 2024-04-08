@@ -190,23 +190,11 @@ function M.nav_file(id)
     local buf_id = get_or_create_buffer(filename)
     local set_row = not vim.api.nvim_buf_is_loaded(buf_id)
 
-    if set_row then
-        local wins = vim.api.nvim_tabpage_list_wins(0)
-        for _, win in ipairs(wins) do
-            local buf = vim.api.nvim_win_get_buf(win)
-            if buf == buf_id then
-                vim.api.nvim_set_current_win(win)
-                if mark.row and mark.col then
-                    vim.cmd(string.format(":call cursor(%d, %d)", mark.row, mark.col))
-                    log.debug(
-                        string.format(
-                            "nav_file(): Setting cursor to row: %d, col: %d",
-                            mark.row,
-                            mark.col
-                        )
-                    )
-                end
-            end
+    local wins = vim.api.nvim_tabpage_list_wins(0)
+    for _, win in ipairs(wins) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if buf == buf_id then
+            vim.api.nvim_set_current_win(win)
         end
     end
 
